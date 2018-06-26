@@ -78,7 +78,7 @@ class LSFCluster(JobQueueCluster):
             header_lines.append('#BSUB -R "rusage[mem=%s]"' % mempercore)
         if corespernode is not None:
             header_lines.append('#BSUB -R "span[ptile=%s]"' % corespernode)
-        header_lines.extend(['#PBS %s' % arg for arg in job_extra])
+        header_lines.extend(['#BSUB %s' % arg for arg in job_extra])
 
         # Declare class attribute that shall be overriden
         self.job_header = '\n'.join(header_lines)
