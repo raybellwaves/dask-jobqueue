@@ -24,3 +24,6 @@ jobqueue:
     job-cpu: null
     job-mem: null
     job-extra: {}
+
+  lsf:
+    job-extra: {}

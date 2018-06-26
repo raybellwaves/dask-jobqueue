@@ -54,7 +54,7 @@ class LSFCluster(JobQueueCluster):
                  walltime=dask.config.get('jobqueue.ncpus'),
                  mempercore=dask.config.get('jobqueue.mempercore'),
                  corespernode=dask.config.get('jobqueue.corespernode'),
-                 job_extra=dask.config.get('jobqueue.ldf.job-extra'),
+                 job_extra=dask.config.get('jobqueue.lsf.job-extra'),
                  **kwargs):
 
         # Instantiate args and parameters from parent abstract class
@@ -88,3 +88,5 @@ class LSFCluster(JobQueueCluster):
     def _job_id_from_submit_output(self, out):
         return out.split('.')[0].strip()
 
+def lsf_format_bytes_ceil(n):
+    return '%d' % math.ceil(n / (1024**2))
