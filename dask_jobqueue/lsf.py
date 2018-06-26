@@ -50,10 +50,9 @@ class LSFCluster(JobQueueCluster):
     def __init__(self,
                  queue=dask.config.get('jobqueue.queue'),
                  project=dask.config.get('jobqueue.project'),
+                 core_spec=dask.config.get('jobqueue.core-spec'),
+                 mem_spec=dask.config.get('jobqueue.mem-spec'),
                  walltime=dask.config.get('jobqueue.walltime'),
-                 walltime=dask.config.get('jobqueue.ncpus'),
-                 mempercore=dask.config.get('jobqueue.mempercore'),
-                 corespernode=dask.config.get('jobqueue.corespernode'),
                  job_extra=dask.config.get('jobqueue.lsf.job-extra'),
                  **kwargs):
 
@@ -68,16 +67,15 @@ class LSFCluster(JobQueueCluster):
             header_lines.append('#BSUB -q %s' % queue)
         if project is not None:
             header_lines.append('#BSUB -P %s' % project)
-        if project is not None:
-            header_lines.append('#BSUB -P %s' % project)
+        if core_spec is not None:
+            ncpus = self.worker_processes * self.worker_threads
+            header_lines.append('#BSUB -n %s' % ncpus)
+        if mem_spec is not None:
+            memory = self.worker_memory * self.worker_processes
+            memory_string = lsf_format_bytes_ceil(memory)
+            header_lines.append('#BSUB -R "rusage[mem=%s]"' % memory_string)
         if walltime is not None:
             header_lines.append('#BSUB -w %s' % walltime)
-        if ncpus is not None:
-            header_lines.append('#BSUB -n %s' % ncpus)
-        if mempercore is not None:
-            header_lines.append('#BSUB -R "rusage[mem=%s]"' % mempercore)
-        if corespernode is not None:
-            header_lines.append('#BSUB -R "span[ptile=%s]"' % corespernode)
         header_lines.extend(['#BSUB %s' % arg for arg in job_extra])
 
         # Declare class attribute that shall be overriden

@@ -26,4 +26,6 @@ jobqueue:
     job-extra: {}
 
   lsf:
+    core-spec: null
+    mem-spec: null
     job-extra: {}
