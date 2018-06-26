@@ -50,8 +50,8 @@ class LSFCluster(JobQueueCluster):
     def __init__(self,
                  queue=dask.config.get('jobqueue.queue'),
                  project=dask.config.get('jobqueue.project'),
-                 core_spec=dask.config.get('jobqueue.core-spec'),
-                 mem_spec=dask.config.get('jobqueue.mem-spec'),
+                 core_spec=dask.config.get('jobqueue.lsf.core-spec'),
+                 mem_spec=dask.config.get('jobqueue.lsf.mem-spec'),
                  walltime=dask.config.get('jobqueue.walltime'),
                  job_extra=dask.config.get('jobqueue.lsf.job-extra'),
                  **kwargs):
